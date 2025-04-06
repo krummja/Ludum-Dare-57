@@ -1,0 +1,110 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0vlmdc6a4qhn"]
+
+[ext_resource type="Script" uid="uid://bag68at8so4l5" path="res://scenes/ui/ui.gd" id="1_tkgol"]
+
+[node name="UI Layer" type="CanvasLayer"]
+
+[node name="Debug UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tkgol")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Debug UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Debug UI/VBoxContainer"]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="Debug UI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+selected = 1
+item_count = 3
+popup/item_0/text = "Layer 3"
+popup/item_0/id = 0
+popup/item_1/text = "Layer 2"
+popup/item_1/id = 1
+popup/item_2/text = "Layer 1"
+popup/item_2/id = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Debug UI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Debug UI/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Debug UI/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Debug UI/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "100"
+vertical_alignment = 1
+
+[node name="Speed Slider" type="HSlider" parent="Debug UI/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 100.0
+max_value = 300.0
+step = 25.0
+value = 100.0
+tick_count = 9
+ticks_on_borders = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Debug UI/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Debug UI/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "100"
+vertical_alignment = 1
+
+[node name="Jump Slider" type="HSlider" parent="Debug UI/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 100.0
+max_value = 1000.0
+step = 100.0
+value = 100.0
+tick_count = 10
+ticks_on_borders = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Debug UI/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Debug UI/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "100"
+vertical_alignment = 1
+
+[node name="Gravity Slider" type="HSlider" parent="Debug UI/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 100.0
+max_value = 1000.0
+step = 100.0
+value = 100.0
+tick_count = 10
+ticks_on_borders = true
+
+[node name="Game UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://duu447i0kan7l"]
+
+[ext_resource type="Shader" uid="uid://diwv7lvooqyvq" path="res://assets/shaders/gradient.gdshader" id="1_8uevn"]
+
+[resource]
+shader = ExtResource("1_8uevn")
+shader_parameter/first_color = Vector4(1, 1, 1, -5.705)
+shader_parameter/second_color = Vector4(0, 0, 0, 1)
+shader_parameter/position = 1.428
+shader_parameter/stepIntensify = 50

@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://1htkeqa412s3"]
+
+[ext_resource type="Shader" uid="uid://b6th2rqwx4a45" path="res://assets/shaders/blur.gdshader" id="1_nc0xw"]
+
+[resource]
+shader = ExtResource("1_nc0xw")
+shader_parameter/strength = 9.102
+shader_parameter/sample_power = 8
+shader_parameter/is_canvas_group = true

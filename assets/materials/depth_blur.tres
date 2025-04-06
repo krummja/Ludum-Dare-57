@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bg11pcu24ekfg"]
+
+[sub_resource type="Shader" id="Shader_0wfyh"]
+code = "shader_type canvas_item;
+
+uniform float lod: hint_range(0.0, 5.0) = 0.0;
+uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_linear_mipmap;
+
+void fragment() {
+	vec4 color = texture(SCREEN_TEXTURE, SCREEN_UV, lod);
+	COLOR = vec4(color.rgb, 1.0);
+}"
+
+[resource]
+shader = SubResource("Shader_0wfyh")
+shader_parameter/lod = 0.0
