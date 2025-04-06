@@ -7,5 +7,5 @@ uniform int stepIntensify : hint_range(1, 50) = 10;
 
 void fragment() {
 	float pos = round(smoothstep(0,1,(position + UV.y) / 2.0) * float(stepIntensify));
-	COLOR = mix(first_color,second_color,pos/float(stepIntensify)); 
+	COLOR = mix(first_color,second_color,pos/float(stepIntensify));
 }

@@ -1,0 +1,176 @@
+[gd_scene load_steps=16 format=4 uid="uid://d3hf8jirvf8gk"]
+
+[ext_resource type="Script" uid="uid://d2v5nt7dy5wti" path="res://scenes/game/level.gd" id="1_kdlgo"]
+[ext_resource type="TileSet" uid="uid://s8wk3eitfrb4" path="res://assets/tilesets/tileset_dev.tres" id="2_1bryu"]
+[ext_resource type="AudioStream" uid="uid://kyqf40rnlbdy" path="res://assets/audio/zoom-sound.mp3" id="2_dxp7b"]
+[ext_resource type="Shader" uid="uid://b6th2rqwx4a45" path="res://assets/shaders/blur.gdshader" id="3_dxp7b"]
+[ext_resource type="PackedScene" uid="uid://bwpbc737j7lcr" path="res://scenes/player/player.tscn" id="4_unvbt"]
+[ext_resource type="Material" uid="uid://duu447i0kan7l" path="res://assets/materials/gradient.tres" id="5_2u4xi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dxp7b"]
+size = Vector2(18, 36)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1bryu"]
+size = Vector2(396, 36)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sugp2"]
+shader = ExtResource("3_dxp7b")
+shader_parameter/strength = 0.0
+shader_parameter/sample_power = 6
+shader_parameter/is_canvas_group = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jyhfs"]
+shader = ExtResource("3_dxp7b")
+shader_parameter/strength = 0.0
+shader_parameter/sample_power = 3
+shader_parameter/is_canvas_group = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbgi4"]
+shader = ExtResource("3_dxp7b")
+shader_parameter/strength = 0.0
+shader_parameter/sample_power = 5
+shader_parameter/is_canvas_group = true
+
+[sub_resource type="Shader" id="Shader_1bryu"]
+code = "shader_type canvas_item;
+
+uniform vec4 first_color = vec4(1.0);
+uniform vec4 second_color = vec4(0, 0, 0, 1.0);
+uniform float position : hint_range(-2, 2) = 0.5;
+uniform int stepIntensify : hint_range(1, 50) = 10;
+
+void fragment() {
+	float pos = round(smoothstep(0,1,(position + UV.y) / 2.0) * float(stepIntensify));
+	COLOR = mix(first_color,second_color,pos/float(stepIntensify));
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dxp7b"]
+shader = SubResource("Shader_1bryu")
+shader_parameter/first_color = Vector4(1, 1, 1, 1)
+shader_parameter/second_color = Vector4(0.29, 0.61, 1, 1)
+shader_parameter/position = 0.768
+shader_parameter/stepIntensify = 50
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bryu"]
+shader = SubResource("Shader_1bryu")
+shader_parameter/first_color = Vector4(0.395, 0.28, 0.21, 1)
+shader_parameter/second_color = Vector4(0.18, 0.15, 0.32, 1)
+shader_parameter/position = 0.0670001
+shader_parameter/stepIntensify = 40
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_unvbt"]
+shader = SubResource("Shader_1bryu")
+shader_parameter/first_color = Vector4(1, 1, 1, -7.35)
+shader_parameter/second_color = Vector4(1, 1, 1, 0.805)
+shader_parameter/position = 0.952
+shader_parameter/stepIntensify = 50
+
+[node name="Level 1" type="Node2D" node_paths=PackedStringArray("player", "death_zone", "exit", "layer_1", "layer_2", "layer_3", "zoom")]
+process_mode = 1
+script = ExtResource("1_kdlgo")
+player = NodePath("Player")
+death_zone = NodePath("Death Zone")
+exit = NodePath("Exit")
+layer_1 = NodePath("Layers/Layer 1")
+layer_2 = NodePath("Layers/Layer 2")
+layer_3 = NodePath("Layers/Layer 3")
+lerp_speed = 0.1
+zoom = NodePath("ZoomFX")
+
+[node name="ZoomFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_dxp7b")
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(-4, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+z_index = 10
+position = Vector2(207, -36)
+shape = SubResource("RectangleShape2D_dxp7b")
+
+[node name="Death Zone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Death Zone"]
+z_index = 10
+position = Vector2(0, 90)
+shape = SubResource("RectangleShape2D_1bryu")
+debug_color = Color(0.907048, 0.247217, 0.448053, 0.42)
+
+[node name="TileMapLayer Bounds" type="TileMapLayer" parent="."]
+modulate = Color(0, 0, 0, 1)
+z_index = 4
+texture_filter = 3
+tile_map_data = PackedByteArray("AADy//j/AQAOAAEAAADy//n/AQAOAAEAAADy//r/AQAOAAEAAADy//v/AQAOAAEAAADy//z/AQAOAAEAAADy//3/AQAOAAEAAADy//7/AQAOAAEAAADy////AQAOAAEAAADy/wAAAQAOAAEAAADy/wEAAQAOAAEAAADy/wIAAQAOAAEAAADy/wMAAQAOAAEAAADy/wQAAQAOAAEAAADy/wUAAQAOAAEAAADy/wYAAQAOAAEAAADy/wcAAQAOAAEAAADz//j/AQAOAAEAAADz//z/AQAOAAEAAADz//3/AQAOAAEAAADz//7/AQAOAAEAAADz////AQAOAAEAAADz/wAAAQAOAAEAAADz/wEAAQAOAAEAAADz/wIAAQAOAAEAAADz/wMAAQAOAAEAAADz/wQAAQAOAAEAAADz/wUAAQAOAAEAAADz/wYAAQAOAAEAAADz/wcAAQAOAAEAAAD0//j/AQAOAAEAAAD0//z/AQAOAAEAAAD0//3/AQAOAAEAAAD0//7/AQAOAAEAAAD0////AQAOAAEAAAD0/wAAAQAOAAEAAAD0/wEAAQAOAAEAAAD0/wIAAQAOAAEAAAD0/wMAAQAOAAEAAAD0/wQAAQAOAAEAAAD0/wUAAQAOAAEAAAD0/wYAAQAOAAEAAAD0/wcAAQAOAAEAAAD1//j/AQAOAAEAAAD1/wcAAQAOAAEAAAD2//j/AQAOAAEAAAD2/wcAAQAOAAEAAAD3//j/AQAOAAEAAAD3/wcAAQAOAAEAAAD4//j/AQAOAAEAAAD4/wcAAQAOAAEAAAD5//j/AQAOAAEAAAD5/wcAAQAOAAEAAAD6//j/AQAOAAEAAAD6/wcAAQAOAAEAAAD7//j/AQAOAAEAAAD7/wcAAQAOAAEAAAD8//j/AQAOAAEAAAD8/wcAAQAOAAEAAAD9//j/AQAOAAEAAAD9/wcAAQAOAAEAAAD+//j/AQAOAAEAAAD+/wcAAQAOAAEAAAD///j/AQAOAAEAAAD//wcAAQAOAAEAAAAAAPj/AQAOAAEAAAAAAAcAAQAOAAEAAAABAPj/AQAOAAEAAAABAAcAAQAOAAEAAAACAPj/AQAOAAEAAAACAAcAAQAOAAEAAAADAPj/AQAOAAEAAAADAAcAAQAOAAEAAAAEAPj/AQAOAAEAAAAEAAcAAQAOAAEAAAAFAPj/AQAOAAEAAAAFAAcAAQAOAAEAAAAGAPj/AQAOAAEAAAAGAAcAAQAOAAEAAAAHAPj/AQAOAAEAAAAHAAcAAQAOAAEAAAAIAPj/AQAOAAEAAAAIAAcAAQAOAAEAAAAJAPj/AQAOAAEAAAAJAAcAAQAOAAEAAAAKAPj/AQAOAAEAAAAKAAcAAQAOAAEAAAALAPj/AQAOAAEAAAALAPn/AQAOAAEAAAALAPr/AQAOAAEAAAALAPv/AQAOAAEAAAALAPz/AQAOAAEAAAALAP3/AQAOAAEAAAALAP7/AQAOAAEAAAALAP//AQAOAAEAAAALAAAAAQAOAAEAAAALAAEAAQAOAAEAAAALAAIAAQAOAAEAAAALAAMAAQAOAAEAAAALAAQAAQAOAAEAAAALAAUAAQAOAAEAAAALAAYAAQAOAAEAAAALAAcAAQAOAAEAAAAMAPj/AQAOAAEAAAAMAPn/AQAOAAEAAAAMAPr/AQAOAAEAAAAMAPv/AQAOAAEAAAAMAPz/AQAOAAEAAAAMAP3/AQAOAAEAAAAMAP7/AQAOAAEAAAAMAP//AQAOAAEAAAAMAAAAAQAOAAEAAAAMAAEAAQAOAAEAAAAMAAIAAQAOAAEAAAAMAAMAAQAOAAEAAAAMAAQAAQAOAAEAAAAMAAUAAQAOAAEAAAAMAAYAAQAOAAEAAAAMAAcAAQAOAAEAAAANAPj/AQAOAAEAAAANAPn/AQAOAAEAAAANAPr/AQAOAAEAAAANAPv/AQAOAAEAAAANAPz/AQAOAAEAAAANAP3/AQAOAAEAAAANAP7/AQAOAAEAAAANAP//AQAOAAEAAAANAAAAAQAOAAEAAAANAAEAAQAOAAEAAAANAAIAAQAOAAEAAAANAAMAAQAOAAEAAAANAAQAAQAOAAEAAAANAAUAAQAOAAEAAAANAAYAAQAOAAEAAAANAAcAAQAOAAEAAADz//n/AQAOAAEAAADz//r/AQAOAAEAAADz//v/AQAOAAEAAAD0//n/AQAOAAEAAAD0//r/AQAOAAEAAAD0//v/AQAOAAEAAAA=")
+tile_set = ExtResource("2_1bryu")
+
+[node name="Layers" type="Node2D" parent="."]
+
+[node name="Layer 1" type="CanvasGroup" parent="Layers"]
+z_index = 1
+material = SubResource("ShaderMaterial_sugp2")
+position = Vector2(1, 0)
+
+[node name="TileMapLayer 3" type="TileMapLayer" parent="Layers/Layer 1"]
+texture_filter = 3
+tile_map_data = PackedByteArray("AAAJAP//AQABAAEAAAAKAP//AQACAAEAAAAJAAAAAQABAAIAAAAJAAEAAQABAAIAAAAJAAIAAQABAAIAAAAJAAMAAQABAAIAAAAJAAQAAQABAAIAAAAJAAUAAQABAAIAAAAJAAYAAQABAAIAAAAKAAAAAQACAAIAAAAKAAEAAQACAAIAAAAKAAIAAQACAAIAAAAKAAMAAQACAAIAAAAKAAQAAQACAAIAAAAKAAUAAQACAAIAAAAKAAYAAQACAAIAAAAKAAcAAQACAAIAAAAJAAcAAQABAAIAAAD1/wAAAQACAAEAAAD2/wAAAQADAAEAAAD1/wEAAQACAAIAAAD1/wIAAQACAAIAAAD1/wMAAQACAAIAAAD1/wQAAQACAAIAAAD2/wEAAQADAAIAAAD2/wIAAQADAAIAAAD2/wMAAQADAAIAAAD2/wQAAQADAAIAAAD2/wUAAQADAAIAAAALAAAAAQACAAIAAAALAAEAAQACAAIAAAALAAIAAQACAAIAAAALAAMAAQACAAIAAAALAAQAAQACAAIAAAALAAUAAQACAAIAAAALAP//AQACAAEAAAA=")
+tile_set = ExtResource("2_1bryu")
+
+[node name="Layer 2" type="CanvasGroup" parent="Layers"]
+z_index = 2
+material = SubResource("ShaderMaterial_jyhfs")
+
+[node name="TileMapLayer 2" type="TileMapLayer" parent="Layers/Layer 2"]
+texture_filter = 3
+tile_map_data = PackedByteArray("AAD9/wAAAQADAAEAAAD8/wAAAQACAAEAAAD7/wAAAQACAAEAAAD6/wAAAQACAAEAAAD5/wAAAQACAAEAAAD4/wAAAQACAAEAAAD3/wAAAQACAAEAAAD2/wAAAQACAAEAAAD1/wAAAQACAAEAAAD9/wEAAQADAAIAAAD9/wIAAQADAAIAAAD9/wMAAQADAAIAAAD9/wQAAQADAAIAAAD9/wUAAQADAAIAAAD9/wYAAQADAAIAAAD1/wEAAQACAAIAAAD1/wIAAQACAAIAAAD1/wMAAQACAAIAAAD1/wQAAQACAAIAAAD1/wUAAQACAAIAAAD1/wYAAQACAAIAAAD2/wEAAQACAAIAAAD2/wIAAQACAAIAAAD2/wMAAQACAAIAAAD2/wQAAQACAAIAAAD2/wUAAQACAAIAAAD2/wYAAQACAAIAAAD3/wEAAQACAAIAAAD3/wIAAQACAAIAAAD3/wMAAQACAAIAAAD3/wQAAQACAAIAAAD3/wUAAQACAAIAAAD3/wYAAQACAAIAAAD4/wEAAQACAAIAAAD4/wIAAQACAAIAAAD4/wMAAQACAAIAAAD4/wQAAQACAAIAAAD4/wUAAQACAAIAAAD4/wYAAQACAAIAAAD5/wEAAQACAAIAAAD5/wIAAQACAAIAAAD5/wMAAQACAAIAAAD5/wQAAQACAAIAAAD5/wUAAQACAAIAAAD5/wYAAQACAAIAAAD6/wEAAQACAAIAAAD6/wIAAQACAAIAAAD6/wMAAQACAAIAAAD6/wQAAQACAAIAAAD6/wUAAQACAAIAAAD6/wYAAQACAAIAAAD7/wEAAQACAAIAAAD7/wIAAQACAAIAAAD7/wMAAQACAAIAAAD7/wQAAQACAAIAAAD7/wUAAQACAAIAAAD7/wYAAQACAAIAAAD8/wEAAQACAAIAAAD8/wIAAQACAAIAAAD8/wMAAQACAAIAAAD8/wQAAQACAAIAAAD8/wUAAQACAAIAAAD8/wYAAQACAAIAAAD1/wcAAQACAAIAAAD2/wcAAQACAAIAAAD3/wcAAQACAAIAAAD4/wcAAQACAAIAAAD5/wcAAQACAAIAAAD6/wcAAQACAAIAAAD7/wcAAQACAAIAAAD8/wcAAQACAAIAAAD9/wcAAQADAAIAAAA=")
+tile_set = ExtResource("2_1bryu")
+
+[node name="Layer 3" type="CanvasGroup" parent="Layers"]
+z_index = 3
+material = SubResource("ShaderMaterial_tbgi4")
+
+[node name="TileMapLayer 1" type="TileMapLayer" parent="Layers/Layer 3"]
+texture_filter = 3
+tile_map_data = PackedByteArray("AAAFAAEAAQABAAEAAAAFAAIAAQABAAIAAAAFAAMAAQABAAIAAAAFAAQAAQABAAIAAAAFAAUAAQABAAIAAAAFAAYAAQABAAIAAAAGAAEAAQACAAEAAAAHAAEAAQACAAEAAAAIAAEAAQACAAEAAAAJAAEAAQACAAEAAAAKAAEAAQACAAEAAAAGAAIAAQACAAIAAAAGAAMAAQACAAIAAAAHAAMAAQACAAIAAAAHAAQAAQACAAIAAAAIAAQAAQACAAIAAAAIAAUAAQACAAIAAAAJAAUAAQACAAIAAAAJAAYAAQACAAIAAAAKAAYAAQACAAIAAAAKAAUAAQACAAIAAAAKAAQAAQACAAIAAAAKAAMAAQACAAIAAAAKAAIAAQACAAIAAAAJAAIAAQACAAIAAAAIAAIAAQACAAIAAAAHAAIAAQACAAIAAAAIAAMAAQACAAIAAAAJAAMAAQACAAIAAAAJAAQAAQACAAIAAAAGAAQAAQACAAIAAAAGAAUAAQACAAIAAAAGAAYAAQACAAIAAAAHAAYAAQACAAIAAAAIAAYAAQACAAIAAAAHAAUAAQACAAIAAAACAP//AQADAAEAAAABAP//AQACAAEAAAAAAP//AQACAAEAAAD/////AQACAAEAAAD+////AQACAAEAAAD9////AQACAAEAAAD8////AQACAAEAAAD7////AQABAAEAAAD7/wAAAQABAAIAAAD7/wEAAQABAAIAAAD7/wIAAQABAAIAAAD7/wMAAQABAAIAAAD7/wQAAQABAAIAAAD7/wUAAQABAAIAAAD7/wYAAQABAAIAAAACAAAAAQADAAIAAAACAAEAAQADAAIAAAACAAIAAQADAAIAAAACAAMAAQADAAIAAAACAAQAAQADAAIAAAACAAUAAQADAAIAAAACAAYAAQADAAIAAAD8/wAAAQACAAIAAAD8/wEAAQACAAIAAAD8/wIAAQACAAIAAAD8/wMAAQACAAIAAAD8/wQAAQACAAIAAAD8/wUAAQACAAIAAAD8/wYAAQACAAIAAAD9/wAAAQACAAIAAAD9/wEAAQACAAIAAAD9/wIAAQACAAIAAAD9/wMAAQACAAIAAAD9/wQAAQACAAIAAAD9/wUAAQACAAIAAAD9/wYAAQACAAIAAAD+/wAAAQACAAIAAAD+/wEAAQACAAIAAAD+/wIAAQACAAIAAAD+/wMAAQACAAIAAAD+/wQAAQACAAIAAAD+/wUAAQACAAIAAAD+/wYAAQACAAIAAAD//wAAAQACAAIAAAD//wEAAQACAAIAAAD//wIAAQACAAIAAAD//wMAAQACAAIAAAD//wQAAQACAAIAAAD//wUAAQACAAIAAAD//wYAAQACAAIAAAAAAAAAAQACAAIAAAAAAAEAAQACAAIAAAAAAAIAAQACAAIAAAAAAAMAAQACAAIAAAAAAAQAAQACAAIAAAAAAAUAAQACAAIAAAAAAAYAAQACAAIAAAABAAAAAQACAAIAAAABAAEAAQACAAIAAAABAAIAAQACAAIAAAABAAMAAQACAAIAAAABAAQAAQACAAIAAAABAAUAAQACAAIAAAABAAYAAQACAAIAAAAGAAcAAQACAAIAAAAHAAcAAQACAAIAAAAIAAcAAQACAAIAAAAJAAcAAQACAAIAAAAKAAcAAQACAAIAAAAFAAcAAQABAAIAAAACAAcAAQADAAIAAAD7/wcAAQABAAIAAAD8/wcAAQACAAIAAAD9/wcAAQACAAIAAAD+/wcAAQACAAIAAAD//wcAAQACAAIAAAAAAAcAAQACAAIAAAABAAcAAQACAAIAAAD1/wAAAQACAAEAAAD1/wEAAQACAAIAAAD1/wIAAQACAAIAAAD1/wMAAQACAAIAAAD1/wQAAQACAAIAAAD1/wUAAQACAAIAAAD2/wEAAQADAAIAAAD2/wIAAQADAAIAAAD2/wMAAQADAAIAAAD2/wQAAQADAAIAAAD2/wAAAQADAAEAAAALAAEAAQACAAEAAAALAAIAAQACAAIAAAALAAMAAQACAAIAAAALAAQAAQACAAIAAAALAAUAAQACAAIAAAD0/wEAAQACAAIAAAD0/wIAAQACAAIAAAD0/wMAAQACAAIAAAD0/wQAAQACAAIAAAD0/wUAAQACAAIAAAD0/wAAAQACAAEAAAD2/wUAAQADAAIAAAA=")
+tile_set = ExtResource("2_1bryu")
+
+[node name="Camera" type="Camera2D" parent="."]
+scale = Vector2(2, 2)
+zoom = Vector2(2, 2)
+
+[node name="Player" parent="." instance=ExtResource("4_unvbt")]
+position = Vector2(-186, -9)
+speed = 150
+
+[node name="Sky" type="ColorRect" parent="."]
+visible = false
+z_index = -1
+material = SubResource("ShaderMaterial_dxp7b")
+offset_left = -252.0
+offset_top = -144.0
+offset_right = 252.0
+offset_bottom = 144.0
+
+[node name="Underground" type="ColorRect" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_1bryu")
+offset_left = -252.0
+offset_top = -144.0
+offset_right = 252.0
+offset_bottom = 144.0
+
+[node name="Gradient" type="ColorRect" parent="."]
+z_index = 3
+material = ExtResource("5_2u4xi")
+offset_left = -252.0
+offset_top = 54.0
+offset_right = 252.0
+offset_bottom = 144.0
+
+[node name="Gradient2" type="ColorRect" parent="."]
+z_index = 3
+material = SubResource("ShaderMaterial_unvbt")
+offset_left = 167.0
+offset_top = -18.0
+offset_right = 203.0
+offset_bottom = 13.0
+rotation = -1.57079

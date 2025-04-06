@@ -5,6 +5,7 @@ enum AnimationState {
     RUN,
     JUMP,
     IDLE,
+    DEAD,
 }
 
 @export_group("Kinematics")
@@ -15,22 +16,27 @@ enum AnimationState {
 @export_group("Graphics")
 @export var sprite: AnimatedSprite2D
 
+@export_group("Audio")
+@export var jump_sound: AudioStreamPlayer
 
+var alive = true
 var animation_state: AnimationState = AnimationState.IDLE
-
 
 func _physics_process(delta: float) -> void:
     velocity.y += gravity * delta
 
-    var h_input = Input.get_axis("walk_left", "walk_right")
-    velocity.x = h_input * speed
+    if alive:
+        var h_input = Input.get_axis("walk_left", "walk_right")
+        velocity.x = h_input * speed
 
-    run_animations(h_input)
+        run_animations(h_input)
+
+        if Input.is_action_just_pressed("jump") and is_on_floor():
+            if jump_sound.playing == false:
+                jump_sound.play()
+            velocity.y = jump_speed
+
     move_and_slide()
-
-    if Input.is_action_just_pressed("jump") and is_on_floor():
-        velocity.y = jump_speed
-
 
 func _process(_delta: float) -> void:
     match animation_state:
@@ -42,7 +48,6 @@ func _process(_delta: float) -> void:
             sprite.play("jump")
             if sprite.animation_finished:
                 sprite.stop()
-
 
 func run_animations(h_input: float) -> void:
     if h_input > 0:
@@ -58,3 +63,7 @@ func run_animations(h_input: float) -> void:
         animation_state = AnimationState.IDLE
     else:
         animation_state = AnimationState.JUMP
+
+func kill() -> void:
+    alive = false
+    sprite.flip_v = true
