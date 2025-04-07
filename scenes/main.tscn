@@ -1,90 +1,72 @@
-[gd_scene load_steps=16 format=3 uid="uid://cb2rsa5w3kwbg"]
+[gd_scene load_steps=20 format=3 uid="uid://cb2rsa5w3kwbg"]
 
 [ext_resource type="Script" uid="uid://dnxb24r5dmo1c" path="res://scenes/main.gd" id="1_o5qli"]
-[ext_resource type="Script" uid="uid://k0n664eog2mt" path="res://src/state_machine/state_machine.gd" id="2_o6xl0"]
-[ext_resource type="Script" uid="uid://btwqpdap5cn7s" path="res://src/states/boot.gd" id="3_jkv2x"]
-[ext_resource type="Script" uid="uid://y0pv3uvop6fy" path="res://src/states/splash.gd" id="4_jbj1t"]
-[ext_resource type="Script" uid="uid://biwtx1q6b21jn" path="res://src/states/menu.gd" id="5_muem4"]
-[ext_resource type="Script" uid="uid://cnkplu1r5bdq6" path="res://src/states/playing.gd" id="6_dp3eg"]
-[ext_resource type="Script" uid="uid://mt45wcfrsena" path="res://src/states/paused.gd" id="7_0ld40"]
-[ext_resource type="Script" uid="uid://cex6ft6op51i1" path="res://src/states/win.gd" id="8_gqmmt"]
 [ext_resource type="PackedScene" uid="uid://c2qc7ou6l43jw" path="res://scenes/ui/ui.tscn" id="9_85g3d"]
-[ext_resource type="Script" uid="uid://3pxbfsq30l23" path="res://src/states/lose.gd" id="9_yc10j"]
 [ext_resource type="Script" uid="uid://xshi4wfw2t8h" path="res://scenes/game/level_root.gd" id="10_jbj1t"]
 [ext_resource type="AudioStream" uid="uid://cbneb2n4ov1yw" path="res://assets/audio/dead.wav" id="11_trceg"]
-[ext_resource type="PackedScene" uid="uid://dgbfyt5qi8ois" path="res://scenes/game/levels/level_2.tscn" id="12_trceg"]
-[ext_resource type="Shader" uid="uid://yuaq10ypsuip" path="res://assets/shaders/transition.gdshader" id="13_a8y0u"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jkv2x"]
-shader = ExtResource("13_a8y0u")
-shader_parameter/circle_size = 1.05
-shader_parameter/screen_width = 960.0
-shader_parameter/screen_height = 540.0
+[ext_resource type="AudioStream" uid="uid://cgfnat22xqiyg" path="res://assets/audio/win.wav" id="12_jkv2x"]
+[ext_resource type="PackedScene" uid="uid://cm3q5licp3nfa" path="res://scenes/game/levels/level_2.tscn" id="12_pm3ni"]
+[ext_resource type="PackedScene" uid="uid://dgbfyt5qi8ois" path="res://scenes/game/levels/level_1.tscn" id="12_trceg"]
+[ext_resource type="PackedScene" uid="uid://dkdglkoeqlebf" path="res://scenes/game/levels/level_9.tscn" id="12_y6deb"]
+[ext_resource type="Texture2D" uid="uid://cspgt5rygnols" path="res://assets/debug.png" id="13_0ld40"]
+[ext_resource type="Script" uid="uid://fs6tunvvqb2v" path="res://scenes/debug_overlay.gd" id="13_gqmmt"]
+[ext_resource type="Texture2D" uid="uid://bgnx37f1d4af1" path="res://assets/thanks-end.png" id="13_muem4"]
+[ext_resource type="PackedScene" uid="uid://3gqfwhwg7jsv" path="res://scenes/game/levels/level_3.tscn" id="13_y6deb"]
+[ext_resource type="PackedScene" uid="uid://crwyu6xy1lnor" path="res://scenes/game/levels/level_4.tscn" id="14_og1vs"]
+[ext_resource type="PackedScene" uid="uid://pwa3jqei7ojj" path="res://scenes/game/levels/level_5.tscn" id="15_2wyq8"]
+[ext_resource type="PackedScene" uid="uid://0i73kgt3d7gj" path="res://scenes/game/levels/level_6.tscn" id="16_vxglm"]
+[ext_resource type="PackedScene" uid="uid://b1kf2l4gi0f41" path="res://scenes/game/levels/level_7.tscn" id="17_2f3dj"]
+[ext_resource type="PackedScene" uid="uid://qcq6fiibk30v" path="res://scenes/game/levels/level_8.tscn" id="18_yq6so"]
+[ext_resource type="PackedScene" uid="uid://cvok0oyxq00vh" path="res://scenes/game/levels/level_end.tscn" id="20_y6deb"]
+[ext_resource type="AudioStream" uid="uid://76rh4cwvcgkj" path="res://assets/audio/A Day 4.mp3" id="21_og1vs"]
 
 [node name="Main" type="Node"]
 process_mode = 3
 script = ExtResource("1_o5qli")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("2_o6xl0")
-initial_state = NodePath("Playing")
-metadata/_custom_type_script = "uid://k0n664eog2mt"
-
-[node name="Boot" type="Node" parent="StateMachine" node_paths=PackedStringArray("ui")]
-script = ExtResource("3_jkv2x")
-ui = NodePath("../../UI/Root/Boot")
-metadata/_custom_type_script = "uid://btwqpdap5cn7s"
-
-[node name="Splash" type="Node" parent="StateMachine" node_paths=PackedStringArray("ui")]
-script = ExtResource("4_jbj1t")
-ui = NodePath("../../UI/Root/Splash")
-metadata/_custom_type_script = "uid://y0pv3uvop6fy"
-
-[node name="Menu" type="Node" parent="StateMachine"]
-script = ExtResource("5_muem4")
-metadata/_custom_type_script = "uid://biwtx1q6b21jn"
-
-[node name="Playing" type="Node" parent="StateMachine"]
-script = ExtResource("6_dp3eg")
-metadata/_custom_type_script = "uid://cnkplu1r5bdq6"
-
-[node name="Paused" type="Node" parent="StateMachine"]
-script = ExtResource("7_0ld40")
-metadata/_custom_type_script = "uid://mt45wcfrsena"
-
-[node name="Win" type="Node" parent="StateMachine"]
-script = ExtResource("8_gqmmt")
-metadata/_custom_type_script = "uid://cex6ft6op51i1"
-
-[node name="Lose" type="Node" parent="StateMachine"]
-script = ExtResource("9_yc10j")
-metadata/_custom_type_script = "uid://3pxbfsq30l23"
-
-[node name="Level Root" type="Node2D" parent="." node_paths=PackedStringArray("levels", "current_level", "dead_sound")]
+[node name="Level Root" type="Node2D" parent="." node_paths=PackedStringArray("dead_sound", "win_sound", "ending", "debug")]
 script = ExtResource("10_jbj1t")
-levels = [NodePath("Level 1")]
-current_level = NodePath("Level 1")
+levels = Array[PackedScene]([ExtResource("12_trceg"), ExtResource("12_pm3ni"), ExtResource("13_y6deb"), ExtResource("14_og1vs"), ExtResource("15_2wyq8"), ExtResource("16_vxglm"), ExtResource("17_2f3dj"), ExtResource("18_yq6so"), ExtResource("12_y6deb"), ExtResource("20_y6deb"), ExtResource("20_y6deb")])
 dead_sound = NodePath("Dead Sound")
+win_sound = NodePath("Win Sound")
+ending = NodePath("Thanks-end")
+debug = NodePath("Debug Overlay")
+
+[node name="Debug Overlay" type="Node2D" parent="Level Root" node_paths=PackedStringArray("line")]
+visible = false
+script = ExtResource("13_gqmmt")
+line = NodePath("Line2D")
+
+[node name="Debug" type="Sprite2D" parent="Level Root/Debug Overlay"]
+z_index = 10
+position = Vector2(-218.638, -109)
+scale = Vector2(0.392883, 0.392883)
+texture = ExtResource("13_0ld40")
+
+[node name="Line2D" type="Line2D" parent="Level Root/Debug Overlay"]
+z_index = 12
+position = Vector2(-220.638, -101)
+points = PackedVector2Array(0, 0, 0, 0)
+width = 1.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="Thanks-end" type="Sprite2D" parent="Level Root"]
+visible = false
+modulate = Color(1, 0, 0, 1)
+z_index = 10
+position = Vector2(0, -108)
+scale = Vector2(0.376471, 0.376471)
+texture = ExtResource("13_muem4")
+
+[node name="Music" type="AudioStreamPlayer" parent="Level Root"]
+stream = ExtResource("21_og1vs")
+autoplay = true
 
 [node name="Dead Sound" type="AudioStreamPlayer" parent="Level Root"]
 stream = ExtResource("11_trceg")
 
-[node name="Level 1" parent="Level Root" instance=ExtResource("12_trceg")]
+[node name="Win Sound" type="AudioStreamPlayer" parent="Level Root"]
+stream = ExtResource("12_jkv2x")
 
-[node name="UI" parent="." node_paths=PackedStringArray("state_machine", "level_root") instance=ExtResource("9_85g3d")]
-state_machine = NodePath("../StateMachine")
+[node name="UI" parent="." node_paths=PackedStringArray("level_root") instance=ExtResource("9_85g3d")]
 level_root = NodePath("../Level Root")
-
-[node name="Transition" type="ColorRect" parent="UI"]
-z_index = 10
-material = SubResource("ShaderMaterial_jkv2x")
-offset_left = -252.0
-offset_top = -144.0
-offset_right = 252.0
-offset_bottom = 144.0
-color = Color(0, 0, 0, 1)
-
-[node name="Menu" parent="UI/Root" index="2"]
-visible = false
-
-[editable path="UI"]

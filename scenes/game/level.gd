@@ -23,8 +23,6 @@ enum Layers {
 @export_group("Sounds")
 @export var zoom: AudioStreamPlayer
 
-var ui_view: PlayingView
-
 var tiles_1: TileMapLayer
 var tiles_2: TileMapLayer
 var tiles_3: TileMapLayer
@@ -61,39 +59,28 @@ func _input(event: InputEvent) -> void:
     _switch_collision_layer(_layer_for_index(current_layer_index))
 
 func _set_layer(layer: Layers) -> void:
-    if ui_view == null:
-        var main = get_tree().root.get_child(0)
-        var ui_node = main.get_child(2)
-        ui_view = ui_node.playing
-
     match layer:
         Layers.LAYER_1:
-            ui_view.focus_label.text = "Focus: Far  "
             _transition_modulate(layer_1, Color(1.0, 1.0, 1.0))
             _transition_modulate(layer_2, Color(0.8, 0.8, 0.8))
             _transition_modulate(layer_3, Color(0.5, 0.5, 0.5))
             _transition_blur(layer_1, 0.0)
             _transition_blur(layer_2, 5.0)
             _transition_blur(layer_3, 10.0)
-            player.z_index = 0
         Layers.LAYER_2:
-            ui_view.focus_label.text = "Focus: Mid  "
             _transition_modulate(layer_1, Color(0.8, 0.8, 0.8))
             _transition_modulate(layer_2, Color(1.0, 1.0, 1.0))
             _transition_modulate(layer_3, Color(0.8, 0.8, 0.8))
             _transition_blur(layer_1, 5.0)
             _transition_blur(layer_2, 0.0)
             _transition_blur(layer_3, 5.0)
-            player.z_index = 1
         Layers.LAYER_3:
-            ui_view.focus_label.text = "Focus: Close"
             _transition_modulate(layer_1, Color(0.5, 0.5, 0.5))
             _transition_modulate(layer_2, Color(0.8, 0.8, 0.8))
             _transition_modulate(layer_3, Color(1.0, 1.0, 1.0))
             _transition_blur(layer_1, 10.0)
             _transition_blur(layer_2, 5.0)
             _transition_blur(layer_3, 0.0)
-            player.z_index = 2
 
 func _switch_layer(layer: Layers, time: float) -> void:
     lerp_time += time
@@ -101,32 +88,26 @@ func _switch_layer(layer: Layers, time: float) -> void:
 
     match layer:
         Layers.LAYER_1:
-            ui_view.focus_label.text = "Focus: Far  "
             _transition_modulate(layer_1, Color(1.0, 1.0, 1.0), lerp_time)
             _transition_modulate(layer_2, Color(0.8, 0.8, 0.8), lerp_time)
             _transition_modulate(layer_3, Color(0.5, 0.5, 0.5), lerp_time)
             _transition_blur(layer_1, 0.0, lerp_time)
             _transition_blur(layer_2, 5.0, lerp_time)
             _transition_blur(layer_3, 10.0, lerp_time)
-            player.z_index = 0
         Layers.LAYER_2:
-            ui_view.focus_label.text = "Focus: Mid  "
             _transition_modulate(layer_1, Color(0.8, 0.8, 0.8), lerp_time)
             _transition_modulate(layer_2, Color(1.0, 1.0, 1.0), lerp_time)
             _transition_modulate(layer_3, Color(0.8, 0.8, 0.8), lerp_time)
             _transition_blur(layer_1, 5.0, lerp_time)
             _transition_blur(layer_2, 0.0, lerp_time)
             _transition_blur(layer_3, 5.0, lerp_time)
-            player.z_index = 1
         Layers.LAYER_3:
-            ui_view.focus_label.text = "Focus: Close"
             _transition_modulate(layer_1, Color(0.5, 0.5, 0.5), lerp_time)
             _transition_modulate(layer_2, Color(0.8, 0.8, 0.8), lerp_time)
             _transition_modulate(layer_3, Color(1.0, 1.0, 1.0), lerp_time)
             _transition_blur(layer_1, 10.0, lerp_time)
             _transition_blur(layer_2, 5.0, lerp_time)
             _transition_blur(layer_3, 0.0, lerp_time)
-            player.z_index = 2
 
 func _switch_collision_layer(layer: Layers) -> void:
     match layer:

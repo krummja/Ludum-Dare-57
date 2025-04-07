@@ -62,13 +62,17 @@ animations = [{
 radius = 7.0
 height = 22.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "jump_sound")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "debug_target", "jump_sound")]
 script = ExtResource("1_8afob")
 speed = 125
 jump_speed = -300
 gravity = 1000
 sprite = NodePath("Animations")
+debug_target = NodePath("Debug Target")
 jump_sound = NodePath("Jump")
+
+[node name="Debug Target" type="Marker2D" parent="."]
+position = Vector2(7, -23)
 
 [node name="Dead" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_je7p5")

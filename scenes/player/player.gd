@@ -15,6 +15,7 @@ enum AnimationState {
 
 @export_group("Graphics")
 @export var sprite: AnimatedSprite2D
+@export var debug_target: Marker2D
 
 @export_group("Audio")
 @export var jump_sound: AudioStreamPlayer

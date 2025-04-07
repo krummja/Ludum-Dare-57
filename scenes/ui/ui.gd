@@ -1,67 +1,56 @@
 class_name UI
 extends Node
 
+
 @export_group("Dependencies")
-@export var state_machine: StateMachine
 @export var level_root: Node2D
 
 @export_group("Overlays")
-@export var boot: View
-@export var splash: View
-@export var menu: View
-@export var playing: View
-@export var paused: View
-@export var win: View
-@export var lose: View
+@export var menu: MenuView
+@export var playing: PlayingView
+@export var paused: PausedView
+
+signal level_selected(level: LevelRoot.Levels)
+signal quit_requested
+signal debug_toggled
 
 var views: Dictionary[String, View]:
     get:
         return {
-            States.BOOT: boot,
-            States.SPLASH: splash,
             States.MENU: menu,
             States.PLAYING: playing,
             States.PAUSED: paused,
-            States.WIN: win,
-            States.LOSE: lose,
         }
 
 func _ready() -> void:
-    state_machine.state_changed.connect(_on_state_changed)
-    boot.ui_context = self
-    splash.ui_context = self
     menu.ui_context = self
     playing.ui_context = self
     paused.ui_context = self
-    win.ui_context = self
-    lose.ui_context = self
 
-func _on_state_changed(_previous: String, next: String) -> void:
-    match next:
-        States.BOOT:
-            _hide_all()
-            boot.show()
-        States.SPLASH:
-            _hide_all()
-            splash.show()
-        States.MENU:
-            _hide_all()
-            menu.show()
-        States.PLAYING:
-            _hide_all()
-            playing.show()
-        States.PAUSED:
-            paused.show()
-        States.WIN:
-            win.show()
-        States.LOSE:
-            lose.show()
+    var echo_level_select = func (level: LevelRoot.Levels) -> void:
+        level_selected.emit(level)
+        menu.hide()
+    menu.level_selected.connect(echo_level_select)
+
+    quit_requested.connect(_on_quit_requested)
+    debug_toggled.connect(_on_debug_toggled)
 
 func _hide_all() -> void:
-    boot.hide()
-    splash.hide()
     menu.hide()
     playing.hide()
     paused.hide()
-    win.hide()
-    lose.hide()
+
+func _on_pause() -> void:
+    paused._on_pause()
+
+func _on_unpause() -> void:
+    paused._on_unpause()
+
+func _on_debug_toggled() -> void:
+    level_root.toggle_debug()
+
+func _on_quit_requested() -> void:
+    playing.hide()
+    paused.hide()
+    menu.show()
+    level_root.on_quit_requested()

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://76rh4cwvcgkj"
+path="res://.godot/imported/A Day 4.mp3-bda57c9db49dfbb701b869324b0fba9c.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/A Day 4.mp3"
+dest_files=["res://.godot/imported/A Day 4.mp3-bda57c9db49dfbb701b869324b0fba9c.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

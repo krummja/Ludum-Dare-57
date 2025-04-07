@@ -1,23 +1,56 @@
-[gd_scene load_steps=9 format=3 uid="uid://c2qc7ou6l43jw"]
+[gd_scene load_steps=20 format=3 uid="uid://c2qc7ou6l43jw"]
 
 [ext_resource type="Script" uid="uid://bag68at8so4l5" path="res://scenes/ui/ui.gd" id="1_u7n8c"]
 [ext_resource type="Script" uid="uid://bcruru108f52n" path="res://scenes/ui/views/menu.gd" id="2_f5cxw"]
-[ext_resource type="Script" uid="uid://bwrybne20qd61" path="res://scenes/ui/views/boot.gd" id="2_jcn1r"]
-[ext_resource type="Script" uid="uid://bnr52fgo77l26" path="res://scenes/ui/views/splash.gd" id="3_uegxj"]
+[ext_resource type="Shader" uid="uid://dpbgfcswpof1r" path="res://assets/shaders/scrolling_lines.gdshader" id="3_n3vwu"]
+[ext_resource type="Texture2D" uid="uid://cc1gwsy2qhg17" path="res://assets/sprites/numbers/1.png" id="3_swkix"]
+[ext_resource type="Texture2D" uid="uid://cuivb3nlqxgy6" path="res://assets/sprites/numbers/2.png" id="4_hc5d0"]
+[ext_resource type="Texture2D" uid="uid://dodg2e604etda" path="res://assets/Select a Level.png" id="5_0i47d"]
+[ext_resource type="Texture2D" uid="uid://dxio8aj25owv" path="res://assets/sprites/numbers/3.png" id="5_n3vwu"]
 [ext_resource type="Script" uid="uid://bd2tpfpclp6rb" path="res://scenes/ui/views/playing.gd" id="5_y220t"]
+[ext_resource type="Texture2D" uid="uid://dxmtwogwpdw0q" path="res://assets/sprites/numbers/4.png" id="6_0i47d"]
 [ext_resource type="Script" uid="uid://4k3k0f1imyu3" path="res://scenes/ui/views/paused.gd" id="6_4kltc"]
-[ext_resource type="Script" uid="uid://c7qm3301acf7c" path="res://scenes/ui/views/win.gd" id="7_hl07w"]
-[ext_resource type="Script" uid="uid://b23icak23uqej" path="res://scenes/ui/views/lose.gd" id="8_swkix"]
+[ext_resource type="Texture2D" uid="uid://vfq3o3hi6vhp" path="res://assets/sprites/numbers/5.png" id="7_mgwkc"]
+[ext_resource type="Texture2D" uid="uid://dydeqyv3pseb5" path="res://assets/sprites/numbers/6.png" id="8_4w2x3"]
+[ext_resource type="Texture2D" uid="uid://cug7twx2hscxb" path="res://assets/sprites/numbers/7.png" id="9_svq4k"]
+[ext_resource type="Texture2D" uid="uid://blwayxcvgf358" path="res://assets/sprites/numbers/8.png" id="10_ygedu"]
+[ext_resource type="Texture2D" uid="uid://ddemwts2us6d5" path="res://assets/sprites/numbers/9.png" id="11_oopc8"]
+[ext_resource type="Texture2D" uid="uid://bmtgqo1xpkenn" path="res://assets/frANTicfocusLogo.png" id="12_hc5d0"]
 
-[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("boot", "splash", "menu", "playing", "paused", "win", "lose")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0i47d"]
+shader = ExtResource("3_n3vwu")
+shader_parameter/color_one = Color(0.379609, 0.513136, 0.19093, 1)
+shader_parameter/color_two = Color(0.486399, 0.652083, 0.256955, 1)
+shader_parameter/angle = -31.525
+shader_parameter/line_count = 82.39
+shader_parameter/speed = -0.74
+shader_parameter/blur = 1.22293
+
+[sub_resource type="Shader" id="Shader_1bryu"]
+code = "shader_type canvas_item;
+
+uniform vec4 first_color = vec4(1.0);
+uniform vec4 second_color = vec4(0, 0, 0, 1.0);
+uniform float position : hint_range(-2, 2) = 0.5;
+uniform int stepIntensify : hint_range(1, 50) = 10;
+
+void fragment() {
+	float pos = round(smoothstep(0,1,(position + UV.y) / 2.0) * float(stepIntensify));
+	COLOR = mix(first_color,second_color,pos/float(stepIntensify));
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qmss2"]
+shader = SubResource("Shader_1bryu")
+shader_parameter/first_color = Vector4(0.45, 1.1, 0.375, 1)
+shader_parameter/second_color = Vector4(0.24, -0.405, -0.41, 1)
+shader_parameter/position = 0.819
+shader_parameter/stepIntensify = 50
+
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("menu", "playing", "paused")]
 script = ExtResource("1_u7n8c")
-boot = NodePath("Root/Boot")
-splash = NodePath("Root/Splash")
 menu = NodePath("Root/Menu")
 playing = NodePath("Root/Playing")
 paused = NodePath("Root/Paused")
-win = NodePath("Root/Win")
-lose = NodePath("Root/Lose")
 
 [node name="Root" type="Control" parent="."]
 layout_mode = 3
@@ -27,36 +60,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Boot" type="Control" parent="Root"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("2_jcn1r")
-
-[node name="ColorRect" type="ColorRect" parent="Root/Boot"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
-
-[node name="Splash" type="Control" parent="Root"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("3_uegxj")
-
-[node name="Menu" type="Control" parent="Root"]
+[node name="Menu" type="Control" parent="Root" node_paths=PackedStringArray("buttons")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -64,6 +68,113 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_f5cxw")
+buttons = {
+"Level 1": NodePath("VBoxContainer/CenterContainer/MarginContainer/GridContainer/Button"),
+"Level 2": NodePath("VBoxContainer/CenterContainer/MarginContainer/GridContainer/Button2"),
+"Level 3": NodePath("VBoxContainer/CenterContainer/MarginContainer/GridContainer/Button3"),
+"Level 4": NodePath("VBoxContainer/CenterContainer/MarginContainer/GridContainer/Button4"),
+"Level 5": NodePath("VBoxContainer/CenterContainer/MarginContainer/GridContainer/Button5"),
+"Level 6": NodePath("VBoxContainer/CenterContainer/MarginContainer/GridContainer/Button6"),
+"Level 7": NodePath("VBoxContainer/CenterContainer/MarginContainer/GridContainer/Button7"),
+"Level 8": NodePath("VBoxContainer/CenterContainer/MarginContainer/GridContainer/Button8"),
+"Level 9": NodePath("VBoxContainer/CenterContainer/MarginContainer/GridContainer/Button9")
+}
+
+[node name="Gradient" type="ColorRect" parent="Root/Menu"]
+z_index = -1
+material = SubResource("ShaderMaterial_0i47d")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Root/Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Root/Menu/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="Root/Menu/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("12_hc5d0")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="TextureRect" type="TextureRect" parent="Root/Menu/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("5_0i47d")
+stretch_mode = 4
+
+[node name="CenterContainer" type="CenterContainer" parent="Root/Menu/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Root/Menu/VBoxContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 40
+
+[node name="GridContainer" type="GridContainer" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer"]
+layout_mode = 2
+columns = 9
+
+[node name="Button" type="Button" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("3_swkix")
+
+[node name="Button2" type="Button" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("4_hc5d0")
+
+[node name="Button3" type="Button" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("5_n3vwu")
+
+[node name="Button4" type="Button" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("6_0i47d")
+
+[node name="Button5" type="Button" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("7_mgwkc")
+
+[node name="Button6" type="Button" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("8_4w2x3")
+
+[node name="Button7" type="Button" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("9_svq4k")
+
+[node name="Button8" type="Button" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("10_ygedu")
+
+[node name="Button9" type="Button" parent="Root/Menu/VBoxContainer/CenterContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("11_oopc8")
 
 [node name="Playing" type="Control" parent="Root" node_paths=PackedStringArray("focus_label")]
 visible = false
@@ -94,7 +205,7 @@ size_flags_vertical = 8
 layout_mode = 2
 text = "Focus: Far"
 
-[node name="Paused" type="Control" parent="Root"]
+[node name="Paused" type="Control" parent="Root" node_paths=PackedStringArray("quit_button", "debug_button")]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -103,6 +214,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("6_4kltc")
+quit_button = NodePath("CenterContainer/VBoxContainer/Button")
+debug_button = NodePath("CenterContainer/VBoxContainer/Button2")
+metadata/_custom_type_script = "uid://4k3k0f1imyu3"
+
+[node name="Gradient" type="ColorRect" parent="Root/Paused"]
+visible = false
+z_index = -1
+material = SubResource("ShaderMaterial_qmss2")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="Root/Paused"]
 layout_mode = 1
@@ -112,26 +237,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Root/Paused/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Root/Paused/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Label" type="Label" parent="Root/Paused/CenterContainer/VBoxContainer"]
 layout_mode = 2
 text = "PAUSED"
+horizontal_alignment = 1
 
-[node name="Win" type="Control" parent="Root"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("7_hl07w")
+[node name="Button" type="Button" parent="Root/Paused/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit to Level Select"
 
-[node name="Lose" type="Control" parent="Root"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("8_swkix")
+[node name="Button2" type="Button" parent="Root/Paused/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Toggle Debug"
